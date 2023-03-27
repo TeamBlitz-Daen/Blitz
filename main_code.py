@@ -60,7 +60,7 @@ def concat_values(series):
 
 df2 = df2.groupby('patient_id')[['doctor_advice_notes', 'clinical_observations','appointment_reason']].agg(concat_values).reset_index()
 df3 = df3.groupby('patient_id')[[ 'clinical_observations_1','appointment_reason_1','info']].agg(concat_values).reset_index()
-df_merged = pd.merge(df2, df3, on='patient_id')
+df =  pd.merge(dataset1,df_merged, on="patient_id",how ='outer')
 
 df_merged["full_clinical_obs"] =  df_merged['clinical_observations']+df_merged['clinical_observations_1']
 df_merged["full_Appointment_reasons"] =  df_merged['appointment_reason']+df_merged['appointment_reason_1']
