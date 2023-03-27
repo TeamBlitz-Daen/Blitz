@@ -77,3 +77,34 @@ df['Age_at_pregnancy'] = years.round()
 
 #updated from here 
 ##the main data set is in the variable df, please look the column info 
+
+
+# updated the created a new dataset with all past medical records as flags "past_medical_df"
+df['past_medical_history'] = df['past_medical_history'].apply(str)
+all_medical =''
+for index, row in df.iterrows():
+    if row['past_medical_history']!= "nan":
+        all_medical += row['past_medical_history']
+    all_medical += ','
+list1 = all_medical.split(",")
+while '' in list1:
+    list1.remove('')
+
+    
+list1 = list(set(list1))
+past_medical_df = pd.DataFrame(columns = (['patient_id']+list1))
+
+for index, row in df.iterrows():
+    i =  row['past_medical_history']
+    flag_list = []
+    check_list = i.split(',')
+    flag_list.append(row["patient_id"])
+    for j in list1:
+        if i =='nan':
+            flag_list.append(0)
+        elif j in check_list:
+            flag_list.append(1)
+        else:
+            flag_list.append(0)
+    past_medical_df = past_medical_df.append(pd.Series(flag_list, index = (['patient_id']+list1)), 
+           ignore_index=True)        
